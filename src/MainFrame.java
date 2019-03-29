@@ -5,6 +5,9 @@ public class MainFrame extends JFrame {
     public MainFrame(){
         CalculatorPanel calcPanel = new CalculatorPanel();
 
+        StatefullCalculator calcEngine = new StatefullCalculator(calcPanel);
+
+
         add(calcPanel);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

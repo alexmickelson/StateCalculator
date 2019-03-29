@@ -26,7 +26,7 @@ public class NullState implements ICalculatorState {
             case 7:
             case 8:
             case 9:
-                calculator.ui.setScreen(calculator.ui.getScreen() +""+ num );
+                calculator.ui.setScreen(""+ num );
                 calculator.setState(calculator.getAppendState());
                 break;
 
@@ -36,5 +36,10 @@ public class NullState implements ICalculatorState {
 
     @Override
     public void operator(char op) {
+        if(op == '='){
+            calculator.hist.add(new CalcCommand(Double.parseDouble(calculator.ui.getScreen()), op+""));
+            calculator.calcTotal();
+            calculator.setState(calculator.getSolvedState());
+        }
     }
 }

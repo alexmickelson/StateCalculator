@@ -19,12 +19,12 @@ public class AppendState implements ICalculatorState {
             case 7:
             case 8:
             case 9:
-                calculator.ui.setScreen(calculator.ui.getScreen() +""+ num );
+                calculator.ui.setScreen(calculator.ui.getScreen()+ num );
                 break;
             case 10:
-                double screen = calculator.ui.getScreen();
-                if (screen%1==0){ //there is a . already
-                    return;
+                String screen = calculator.ui.getScreen();
+                if (screen.contains(".")){
+                    break;
                 }
 
                 calculator.ui.setScreen(calculator.ui.getScreen() + ".");
@@ -36,6 +36,19 @@ public class AppendState implements ICalculatorState {
 
     @Override
     public void operator(char op) {
-
+        switch (op){
+            case '+':
+            case '-':
+                //history first
+                calculator.hist.add(new CalcCommand(Double.parseDouble(calculator.ui.getScreen()), op+""));
+                calculator.displayHist();
+                calculator.setState(calculator.nullState);
+                break;
+            case '=':
+                calculator.hist.add(new CalcCommand(Double.parseDouble(calculator.ui.getScreen()), op+""));
+                calculator.calcTotal();
+                calculator.setState(calculator.getSolvedState());
+                break;
+        }
     }
 }

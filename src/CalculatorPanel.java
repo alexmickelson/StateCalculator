@@ -19,7 +19,7 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
     private JButton minus;
     private JButton equals;
     private JButton clear;
-    private StatefullCalculator calculator;
+    private StatefullCalculator calcEngine;
     private JTextArea prevCommands;
     private JTextArea screen;
 
@@ -43,8 +43,33 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
         clear = new JButton("c");
         prevCommands = new JTextArea();
         prevCommands.setEditable(false);
+        JScrollPane hist = new JScrollPane(prevCommands);
+        hist.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        hist.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        hist.setAutoscrolls(true);
+
         screen = new JTextArea("0");
         screen.setEditable(false);
+        JScrollPane screen2 = new JScrollPane(screen);
+        screen2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        screen2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+        one.addActionListener(this);
+        two.addActionListener(this);
+        three.addActionListener(this);
+        four.addActionListener(this);
+        five.addActionListener(this);
+        six.addActionListener(this);
+        seven.addActionListener(this);
+        eight.addActionListener(this);
+        nine.addActionListener(this);
+        zero.addActionListener(this);
+        dot.addActionListener(this);
+        clear.addActionListener(this);
+        plus.addActionListener(this);
+        minus.addActionListener(this);
+        equals.addActionListener(this);
+
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -54,11 +79,11 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
         c.gridy=0;
         c.gridwidth=4;
         c.insets = new Insets(2,2,2,2);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(prevCommands, c);
+        c.fill=GridBagConstraints.BOTH;
+        add(hist, c);
 
         c.gridy=1;
-        add(screen, c);
+        add(screen2, c);
 
         c.gridy=2;
         c.gridwidth=1;
@@ -104,7 +129,7 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
     }
     
     public boolean setCalcEngine(StatefullCalculator calculator){
-        this.calculator = calculator;
+        this.calcEngine = calculator;
         return true;
     }
 
@@ -115,8 +140,8 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
     }
 
     @Override
-    public double getScreen() {
-        return Double.parseDouble(screen.getText());
+    public String getScreen() {
+        return screen.getText();
 
     }
 
@@ -129,39 +154,42 @@ public class CalculatorPanel extends JPanel implements ActionListener, ICalculat
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clicked = (JButton)e.getSource();
-        if (clicked == one){
-            calculator.number(1);
-        }else if (clicked == two){
-            calculator.number(2);
-        }else if (clicked == three){
-            calculator.number(3);
-        }else if (clicked == four){
-            calculator.number(4);
-        }else if (clicked == five){
-            calculator.number(5);
-        }else if (clicked == six){
-            calculator.number(6);
-        }else if (clicked == seven){
-            calculator.number(7);
-        }else if (clicked == eight){
-            calculator.number(8);
-        }else if (clicked == nine){
-            calculator.number(9);
-        }else if (clicked == zero) {
-            calculator.number(0);
-        }else if (clicked == dot){
-            calculator.number(10);
+        if(calcEngine != null){
+            if (clicked == one){
+                calcEngine.number(1);
+            }else if (clicked == two){
+                calcEngine.number(2);
+            }else if (clicked == three){
+                calcEngine.number(3);
+            }else if (clicked == four){
+                calcEngine.number(4);
+            }else if (clicked == five){
+                calcEngine.number(5);
+            }else if (clicked == six){
+                calcEngine.number(6);
+            }else if (clicked == seven){
+                calcEngine.number(7);
+            }else if (clicked == eight){
+                calcEngine.number(8);
+            }else if (clicked == nine){
+                calcEngine.number(9);
+            }else if (clicked == zero) {
+                calcEngine.number(0);
+            }else if (clicked == dot){
+                calcEngine.number(10);
 
 
 
-        }else if (clicked == clear){
-            calculator.clear();
-        }else if (clicked == plus){
-            calculator.operator('+');
-        }else if (clicked == minus){
-            calculator.operator('-');
-        }else if (clicked == equals){
-            calculator.operator('=');
+            }else if (clicked == clear){
+                calcEngine.clear();
+            }else if (clicked == plus){
+                calcEngine.operator('+');
+            }else if (clicked == minus){
+                calcEngine.operator('-');
+            }else if (clicked == equals){
+                calcEngine.operator('=');
+            }
+
         }
     }
 
